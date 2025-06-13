@@ -45,8 +45,9 @@ O broker estará rodando na porta **8080**.
 
 ```bash
 cd sensors-app
-go run sensors.go
+go run sensors.go -t [TIPO]
 ```
+Onde a flag `-t` define o `[TIPO]` do sensor (`humidity`, `temperature` ou `wind`)
 
 Os sensores começarão a enviar dados automaticamente.
 
@@ -77,10 +78,8 @@ Acesse: **http://localhost:8000**
 - Histórico de dados (últimas 100 leituras)
 - Thread-safe com mutexes
 
-### Sensores Simulados [TBA]
-- **Sensor de Umidade**
-- **Sensor de Temperatura**
-- **Sensor de Vento**
+### Sensores Simulados
+- **Sensores Especializados de Umidade, Temperatura ou Vento**
 - Reconexão automática
 - Dados a cada 3 segundos
 
@@ -104,6 +103,8 @@ Acesse: **http://localhost:8000**
 ### Sensores
 - **Intervalo**: 3 segundos
 - **Reconexão**: Automática
+- **Tipo**: Definido pela flag `-t` ao executar o módulo. Pode ser dos tipos `humidity`, `temperature` ou `wind`
+- Cada sensor é executado de forma independente com tipo específico
 
 ### Irrigação
 - **Threshold mín Umidade**: 30% (ajustável por temperatura)
