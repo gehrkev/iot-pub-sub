@@ -30,6 +30,8 @@ type Sensor struct {
 	Unit    string
 }
 
+var brokerAddr string
+
 func (s *Sensor) GenerateReading() float64 {
 	// Simula variação natural com tendência e ruído
 	noise := (rand.Float64() - 0.5) * 2.0 // -1 a 1
@@ -57,9 +59,9 @@ func (s *Sensor) GenerateReading() float64 {
 
 func connectToBroker() (net.Conn, error) {
 	for {
-		conn, err := net.Dial("tcp", "localhost:8080")
+		conn, err := net.Dial("tcp", brokerAddr)
 		if err != nil {
-			log.Printf("Tentando conectar ao broker... %v", err)
+			log.Printf("Tentando conectar ao broker em %s... %v", brokerAddr, err)
 			time.Sleep(2 * time.Second)
 			continue
 		}
@@ -119,7 +121,9 @@ func runSensor(sensor *Sensor) {
 func main() {
 	rand.Seed(time.Now().UnixNano())
 
+	flag.StringVar(&brokerAddr, "b", "localhost:8080", "Endereço e porta do broker IoT (ex: 192.168.1.100:8080)")
 	sensorType := flag.String("t", "", "Tipo de sensor a ser executado (humidity, temperature, ou wind)")
+
 	flag.Parse()
 
 	if *sensorType == "" {

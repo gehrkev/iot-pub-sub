@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"encoding/json"
+	"flag"
 	"fmt"
 	"log"
 	"net"
@@ -26,6 +27,8 @@ type IrrigationSystem struct {
 	MinIntervalMinutes int
 	TotalActivations   int
 }
+
+var brokerAddr string
 
 func NewIrrigationSystem() *IrrigationSystem {
 	return &IrrigationSystem{
@@ -116,9 +119,9 @@ func (sys *IrrigationSystem) printStatus() {
 
 func connectToBroker() (net.Conn, error) {
 	for {
-		conn, err := net.Dial("tcp", "localhost:8080")
+		conn, err := net.Dial("tcp", brokerAddr)
 		if err != nil {
-			log.Printf("Tentando conectar ao broker... %v", err)
+			log.Printf("Tentando conectar ao broker em %s... %v", brokerAddr, err)
 			time.Sleep(2 * time.Second)
 			continue
 		}
@@ -149,6 +152,9 @@ func subscribeToTopics(conn net.Conn, topics []string) error {
 }
 
 func main() {
+	flag.StringVar(&brokerAddr, "b", "localhost:8080", "Endereço e porta do broker IoT (ex: 192.168.1.100:8080)")
+	flag.Parse()
+
 	system := NewIrrigationSystem()
 
 	log.Println("=== SISTEMA DE IRRIGAÇÃO AUTOMATIZADA ===")

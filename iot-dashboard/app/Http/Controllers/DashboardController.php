@@ -9,8 +9,6 @@ use Exception;
 
 class DashboardController extends Controller
 {
-    private $brokerHost = 'localhost';
-    private $brokerPort = 8080;
     private $socket = null;
 
     public function index()
@@ -37,6 +35,9 @@ class DashboardController extends Controller
 
     private function connectAndGetData(): array
     {
+        $brokerHost = env('BROKER_HOST', 'localhost');
+        $brokerPort = env('BROKER_PORT', 8080);
+
         Log::info('Dashboard: Attempting to connect to broker...');
 
         $this->socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
@@ -49,8 +50,8 @@ class DashboardController extends Controller
         socket_set_option($this->socket, SOL_SOCKET, SO_RCVTIMEO, array('sec' => 10, 'usec' => 0)); // Timeout de recebimento de 10s
         socket_set_option($this->socket, SOL_SOCKET, SO_SNDTIMEO, array('sec' => 10, 'usec' => 0)); // Timeout de envio de 10s
 
-        Log::info('Dashboard: Connecting to ' . $this->brokerHost . ':' . $this->brokerPort);
-        $result = socket_connect($this->socket, $this->brokerHost, $this->brokerPort);
+        Log::info('Dashboard: Connecting to ' . $brokerHost . ':' . $brokerPort);
+        $result = socket_connect($this->socket, $brokerHost, $brokerPort);
 
         if (!$result) {
             Log::error('Dashboard: Socket connect failed: ' . socket_strerror(socket_last_error($this->socket)));

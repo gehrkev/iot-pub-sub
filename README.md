@@ -36,19 +36,21 @@ Desenvolvido para a disciplina de Desenvolvimento de Sistemas Paralelos e Distri
 
 ```bash
 cd broker-app
-go run main.go
+go run main.go -l host:port
 ```
 
-O broker estará rodando na porta **8080**.
+Onde `-l` opcionalmente pode ser informado com endereço e porta para o broker escutar 
+(**0.0.0.0:8080** por padrão, caso não informar)
 
 ### 3. Setup dos Sensores
 
 ```bash
 cd sensors-app
-go run sensors.go -t type
+go run sensors.go -t type -b host:port
 ```
 
-Onde `type` pode ser `humidity`, `temperature` ou `wind`, dependendo do tipo do sensor.
+Onde `type` de `-t` pode ser `humidity`, `temperature` ou `wind`, dependendo do tipo do sensor;
+ e `-b` informa endereço e porta do broker (padrão **localhost:8080** caso não informar).
 
 Os sensores começarão a enviar dados automaticamente.
 
@@ -56,12 +58,15 @@ Os sensores começarão a enviar dados automaticamente.
 
 ```bash
 cd irrigation-app
-go run irrigation.go
+go run irrigation.go -b host:port
 ```
-
+Onde `-b` informa endereço e porta do broker (padrão **localhost:8080** caso não informar).
 O sistema monitorará e reagirá aos sensores automaticamente.
 
 ### 5. Setup do Dashboard
+
+Garanta que `BROKER_HOST` e `BROKER_PORT` estão declarados em `ìot-dashboard/.env` (use o `.env.example` como template) 
+e correspondem ao endereço e porta do broker. Em seguida execute:
 
 ```bash
 cd iot-dashboard

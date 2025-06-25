@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"encoding/json"
+	"flag"
 	"fmt"
 	"log"
 	"net"
@@ -207,15 +208,18 @@ func (b *Broker) handleClient(client *Client) {
 }
 
 func main() {
+	listenAddr := flag.String("l", "0.0.0.0:8080", "Endereço e porta para o broker escutar (ex: 0.0.0.0:8080)")
+	flag.Parse()
+
 	broker := NewBroker()
 
-	listener, err := net.Listen("tcp", ":8080")
+	listener, err := net.Listen("tcp", *listenAddr)
 	if err != nil {
-		log.Fatal("Erro ao iniciar servidor:", err)
+		log.Fatalf("Erro ao iniciar servidor em %s: %v", *listenAddr, err)
 	}
 	defer listener.Close()
 
-	log.Println("Broker IoT iniciado na porta 8080")
+	log.Printf("Broker IoT iniciado em %s", *listenAddr)
 	log.Println("Aguardando conexões de sensores e sistemas...")
 
 	for {
