@@ -45,8 +45,10 @@ O broker estará rodando na porta **8080**.
 
 ```bash
 cd sensors-app
-go run sensors.go
+go run sensors.go -t type
 ```
+
+Onde `type` pode ser `humidity`, `temperature` ou `wind`, dependendo do tipo do sensor.
 
 Os sensores começarão a enviar dados automaticamente.
 
@@ -77,19 +79,19 @@ Acesse: **http://localhost:8000**
 - Histórico de dados (últimas 100 leituras)
 - Thread-safe com mutexes
 
-### Sensores Simulados [TBA]
+### Sensores Simulados
 - **Sensor de Umidade**
 - **Sensor de Temperatura**
 - **Sensor de Vento**
 - Reconexão automática
 - Dados a cada 3 segundos
 
-### Sistema de Irrigação [TBA]
-- Ativação e desativação automática de acordo com umidade
+### Sistema de Irrigação
+- Ativação e desativação automática de acordo com umidade e temperatura
 
-### Dashboard Laravel [TBA]
+### Dashboard Laravel
 - Sensores em tempo real
-- Gráficos históricos
+- Gráficos históricos simulados
 - Sistema de alertas
 - Status de conexão
 - Atualização automática
@@ -107,13 +109,13 @@ Acesse: **http://localhost:8000**
 
 ### Irrigação
 - **Threshold mín Umidade**: 30% (ajustável por temperatura)
-- **Threshold máx Umidade**: 70%
+- **Threshold máx Umidade**: 80%
 - **Intervalo mín**: 5 minutos
 
 ### Dashboard
 - **Atualização**: 5 segundos
 - **Histórico**: 24 horas
-- **Gráficos**: Tempo real
+- **Gráficos**: Tempo real (simulado)
 
 ---
 
